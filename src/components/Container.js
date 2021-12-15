@@ -1,12 +1,33 @@
 import React from 'react';
+import { marked } from 'marked';
 
 class Container extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          markdown: ''
+          markdown: `# Title \n## Subtitle \n[Link](https://github.com/vruss14) \n\nExample of inline code: \`<div></div>\` \n\n
+\`\`\` 
+  function exampleFunction(event) {
+    return true;
+  }
+\`\`\` \n
+1. List item one
+2. List item two
+3. List item three \n
+
+> Example of a blockquote. \n
+
+![Code editor symbol](https://www.pngrepo.com/png/20974/64/computer.png) \n
+
+Example of **bolded text**.`
       }
+      this.getMarkdownText = this.getMarkdownText.bind(this);
       this.handleChange = this.handleChange.bind(this);
+    }
+
+    getMarkdownText() {
+        const parsedMarkdownText = marked.parse(this.state.markdown);
+        return { __html: parsedMarkdownText };
     }
 
     handleChange(event) {
@@ -26,7 +47,7 @@ class Container extends React.Component {
                     <div className="d-flex card bg-dark" id="editor-container">
                     <h3 className="text-white text-center fw-lighter fs-3 p-3 bg-primary">Editor</h3>
                         <div className="card-body p-3 text-white d-flex flex-column justify-content-center align-items-center">
-                            <textarea className="w-100 h-100 bg-dark text-white p-2" onChange={this.handleChange}></textarea>
+                            <textarea className="w-100 h-100 bg-dark text-white p-2 overflow-scroll" id="editor" onChange={this.handleChange}>{this.state.markdown}</textarea>
                         </div>
                     </div>
                 </div>
@@ -34,8 +55,8 @@ class Container extends React.Component {
                 <div className="col-6">
                     <div className="d-flex card bg-dark" id="editor-container">
                         <h3 className="text-white text-center fw-lighter fs-3 p-3 bg-success">Previewer</h3>
-                        <div className="card-body p-3 text-white d-flex flex-column justify-content-center align-items-center">
-                            <textarea readOnly className="w-100 h-100 bg-dark text-white p-2" value={this.state.markdown}></textarea>
+                        <div className="card-body p-3 text-white d-flex flex-column justify-content-center align-items-center overflow-scroll">
+                            <div id="preview" className="border border-secondary w-100 h-100 bg-dark text-white p-2 overflow-scroll" dangerouslySetInnerHTML={this.getMarkdownText()}></div>
                         </div>
                     </div>
                 </div>
