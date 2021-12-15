@@ -4,10 +4,17 @@ class Container extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          name: 'Test'
+          markdown: ''
       }
-  
+      this.handleChange = this.handleChange.bind(this);
     }
+
+    handleChange(event) {
+        this.setState({
+          markdown: event.target.value
+        });
+    }
+
     render() {
       return (
         <div className="container-fluid min-vh-100 min-vw-100 d-flex justify-content-center align-items-center flex-column bg-light">
@@ -18,9 +25,8 @@ class Container extends React.Component {
                 <div className="col-5">
                     <div className="d-flex card bg-dark" id="editor-container">
                     <h3 className="text-white text-center fw-lighter fs-3 p-3 bg-primary">Editor</h3>
-
                         <div className="card-body p-3 text-white d-flex flex-column justify-content-center align-items-center">
-                            <textarea className="w-100 h-100 bg-dark text-white p-2"></textarea>
+                            <textarea className="w-100 h-100 bg-dark text-white p-2" onChange={this.handleChange}></textarea>
                         </div>
                     </div>
                 </div>
@@ -29,7 +35,7 @@ class Container extends React.Component {
                     <div className="d-flex card bg-dark" id="editor-container">
                         <h3 className="text-white text-center fw-lighter fs-3 p-3 bg-success">Previewer</h3>
                         <div className="card-body p-3 text-white d-flex flex-column justify-content-center align-items-center">
-                            <textarea className="w-100 h-100 bg-dark text-white p-2"></textarea>
+                            <textarea readOnly className="w-100 h-100 bg-dark text-white p-2" value={this.state.markdown}></textarea>
                         </div>
                     </div>
                 </div>
